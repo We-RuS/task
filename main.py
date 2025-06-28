@@ -54,7 +54,7 @@ def aggregation(data: List[Dict[str, str]], aggregate_value: str) -> List[Dict[s
     numeric_values = []
     for row in data:
         try:
-            numeric_values.append(int(row[column]))
+            numeric_values.append(float(row[column]))
         except ValueError:
             continue
 
@@ -62,7 +62,7 @@ def aggregation(data: List[Dict[str, str]], aggregate_value: str) -> List[Dict[s
         return [{'column': "No numeric values to aggregate"}]
 
     if operator == 'avg':
-        result = sum(numeric_values) / len(numeric_values)
+        result = round(sum(numeric_values) / len(numeric_values), 2)
     elif operator == 'min':
         result = min(numeric_values)
     elif operator == 'max':
@@ -70,7 +70,7 @@ def aggregation(data: List[Dict[str, str]], aggregate_value: str) -> List[Dict[s
     else:
         raise ValueError(f'Invalid Operator:{operator}')
 
-    return [{'column': column, operator: result}]
+    return [{operator: result}]
 
 
 def main():
@@ -88,12 +88,13 @@ def main():
 
     if args.where:
         filtered_data = filter_by_condition(args.where, data)
+        if args.aggregate:
+            aggregated_data = aggregation(filtered_data, args.aggregate)
+            return tabulate(aggregated_data, headers='keys', tablefmt='outline')
         return tabulate(filtered_data, headers='keys', tablefmt='outline')
-
     if args.aggregate:
         aggregated_data = aggregation(data, args.aggregate)
         return tabulate(aggregated_data, headers='keys', tablefmt='outline')
-
     else:
         return tabulate(data, headers='keys', tablefmt='outline')
 
