@@ -14,7 +14,7 @@ class TestMain(unittest.TestCase):
             where=None,
             aggregate="price=min"
         )
-        self.assertEqual(main(), tabulate([{'column': 'price', 'min': 149}], headers='keys', tablefmt='outline'))
+        self.assertEqual(main(), tabulate([{'min': 149}], headers='keys', tablefmt='outline'))
 
         mock_parse_args.return_value = argparse.Namespace(
             file="products.csv",
@@ -37,6 +37,15 @@ class TestMain(unittest.TestCase):
             aggregate=None
         )
         self.assertEqual(main(), tabulate(data, headers='keys', tablefmt='outline'))
+
+    @patch('argparse.ArgumentParser.parse_args')
+    def test_aggregate_with_where(self, mock_parse_args):
+        mock_parse_args.return_value = argparse.Namespace(
+            file="products.csv",
+            where="brand=xiaomi",
+            aggregate="price=min"
+        )
+        self.assertEqual(main(), tabulate([{'min': 149}],headers='keys', tablefmt='outline'))
 
 
 if __name__ == "__main__":

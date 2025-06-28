@@ -34,11 +34,11 @@ def test_filter_by_condition_bigger(sample_data):
 
 
 def test_aggregate_column_avg(sample_data):
-    assert aggregation(sample_data, "price=avg") == [{'column': 'price', 'avg': 799}]
+    assert aggregation(sample_data, "price=avg") == [{'avg': 799}]
 
 
 def test_aggregate_column_max(sample_data):
-    assert aggregation(sample_data, "price=max") == [{'column': 'price', 'max': 1199}]
+    assert aggregation(sample_data, "price=max") == [{'max': 1199}]
 
 
 def test_aggregate_column_error_1(sample_data):
@@ -52,7 +52,7 @@ def test_aggregate_column_error_2(sample_data):
 
 
 def test_aggregate_column_min(sample_data):
-    assert aggregation(sample_data, "price=min") == [{'column': 'price', 'min': 199}]
+    assert aggregation(sample_data, "price=min") == [{'min': 199}]
 
 
 def test_read_csv():
